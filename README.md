@@ -5,7 +5,7 @@ The purpose of this project is to collect, work with, and clean a data set.
 The R script "run_analysis.R" consists of the following steps:
 
 1. Create the data directory under the work directory if it does not exist and download the zip file
-        1. Record the download date, i,e, "Sat Dec 17 16:39:11 2016" 
+ 1. Record the download date, i,e, "Sat Dec 17 16:39:11 2016" 
 2. Unzip the data sets
 3. Read in the data set with the activity labels
 4. Read in the data set with all the features.
