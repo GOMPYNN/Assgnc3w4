@@ -23,12 +23,25 @@ features <- read.table("./data/UCI HAR Dataset/features.txt", stringsAsFactors =
 # Select the mean and standard deviation from the features dataset
 # This is needed for point 2 of the assignment.
 # Search for mean or std preceded or followed by any character any number of times
+# First get the indices of the variables with mean and std.
 featuresNeeded <- grep(".*mean.*|.*std.*", features[, 2])
-featuresNames <- features[featuresSelected, 2]
+# Second get the varaible names
+featuresNames <- features[featuresNeeded, 2]
 
-# Remove "-" and "()" from featuresNames
-featuresNames <- gsub("-","", featuresNames)
-featuresNames <- gsub("\\(+\\)","", featuresNames)
+# Clean up featuresNames: all names to lower, remove (), - and make names more descriptive
+# Needed for point 4 of the assignment
+featuresNames <- tolower(featuresNames)
+
+for (i in 1:length(featuresNames)) 
+{
+        featuresNames[i] = gsub("-","", featuresNames[i])
+        featuresNames[i] = gsub("\\(+\\)","",featuresNames[i])
+        featuresNames[i] = gsub("std","stddev",featuresNames[i])
+        featuresNames[i] = gsub("^(t)","time",featuresNames[i])
+        featuresNames[i] = gsub("^(f)","freq",featuresNames[i])
+        featuresNames[i] = gsub("mag","magnitude",featuresNames[i])
+        featuresNames[i] = gsub("bodybody","body",featuresNames[i])
+}
 
 # Load the train datasets
 trainSet <- read.table("./data/UCI HAR Dataset/train/X_train.txt")[featuresNeeded]
@@ -57,30 +70,17 @@ colnames(mergedData) <- c("subjectid", "activity", featuresNames)
 # Replace activity values 1 to 6 for descriptive names
 # This is needed for point 3 of the assignment
 mergedData$activity <- as.character(mergedData$activity)
-mergedData$activity <- gsub("1", "walking", mergedData$activity)
-mergedData$activity <- gsub("2", "walkingupstairs", mergedData$activity)
-mergedData$activity <- gsub("3", "walkingdownstairs", mergedData$activity)
-mergedData$activity <- gsub("4", "sitting", mergedData$activity)
-mergedData$activity <- gsub("5", "standing", mergedData$activity)
-mergedData$activity <- gsub("6", "laying", mergedData$activity)
+
+translator_vector = c("1" = "walking", "2" = "walkingupstairs", "3" = "walkingdownstairs",
+                      "4" = "sitting", "5" = "standing", "6" = "laying")
+                      
+mergedData$activity = translator_vector[mergedData$activity]                      
 
 # mergedData must by grouped by subjectid and activity to calculate means for each variable
-
-
 # This is the independent tidy dataset with means for each variable
-tidy <- mergedData %>% group_by(subjectid, activity) %>%
+tidyAverages <- mergedData %>% group_by(subjectid, activity) %>%
         summarize_each(funs(mean))
 
-#Ofcourse, R also supports vectorisation, which can be of particular interest if you are interested in performance. FOr a vectorised solution, we first create a lookup vector:
-        
-#        translator_vector = c(A = 'Text for A',
-#                              B = 'Text for B',
-#                              C = 'Text for C')
-
-# and subset this vector using df$ID:
-        
-        dum_vectorized = translator_vector[df$ID]
-
 # Lastly write the tidy data set to a file in csv format 
-write.csv(tidy, "./data/tidy.csv", row.names = FALSE)
+write.csv(tidyAverages, "./data/tidyAverages.csv", row.names = FALSE)
 
