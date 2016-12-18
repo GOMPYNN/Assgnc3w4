@@ -34,12 +34,12 @@ For a more in depth description of all the steps see the READ.md file or the act
 ## Variables
 Below the variables in the tidyAverages.txt file are listed.
 
-Label: subjectid
+Label subjectid
 Variable: Subject Identification number
 Type: Integer
 Values: [1:30]
 
-Label: activity
+Label activity
 Variable: activity perfomed
 Type: Character
 Values: laying, sitting, standing, walking, walkingdownstairs, walkingupstairs
