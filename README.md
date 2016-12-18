@@ -25,4 +25,15 @@ The R script "run_analysis.R" consists of the following steps:
 10. Create a new data set called tidyAverages
  1. Group the merged data set by subjectid and activity
  2. Calculate the averages for all columns (for each subject and activity)
- 3. Write the tidyAverages data set to a csv file.
+ 3. Remove the groups from the data set
+ 4. Write the tidyAverages data set to a txt file.
+
+The resulting tidyAverages data set follows the rules for a tidy data set:
+1. Each variable forms a column
+2. Each observation forms a row
+3. Each type of observational unit forms a table
+
+The tidyAverages.txt file may be read in to R with the following code:
+read.table("./tidyAverages.txt", header = TRUE, sep = "\t", quote = "", stringsAsFactors = FALSE)
+
+The CodeBoook.md file in the repository gives the source of the raw data, the names, a description as well as the range of the variables in the tidyAverages.txt file.

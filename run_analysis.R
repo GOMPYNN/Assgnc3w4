@@ -81,6 +81,9 @@ mergedData$activity = translator_vector[mergedData$activity]
 tidyAverages <- mergedData %>% group_by(subjectid, activity) %>%
         summarize_each(funs(mean))
 
-# Lastly write the tidy data set to a file in csv format 
-write.csv(tidyAverages, "./data/tidyAverages.csv", row.names = FALSE)
+# Remove the groups
+tidyAverages <- ungroup(tidyAverages)
+
+# Lastly write the tidy data set to a file in txt format 
+write.table(tidyAverages, "./data/tidyAverages.txt", row.names = FALSE, quote = FALSE, sep = "\t")
 
